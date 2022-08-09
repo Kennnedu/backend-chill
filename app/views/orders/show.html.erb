@@ -1,4 +1,34 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_order_path(@order) %> |
+<table>
+  <thead>
+    <tr>
+      <th>Position</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @order_items.each do |order_item| %>
+      <tr>
+        <td>
+          <%= order_item.pizza_type.name %>
+        </td>
+        <td>
+          <%= order_item.quantity %>
+        </td>
+        <td>
+          $<%= order_item.pizza_type.price %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>
+  Total Price: $<%= @order.total_price %>
+</h3>
+
+
 <%= link_to 'Back', orders_path %>
