@@ -2,7 +2,7 @@ require "test_helper"
 
 class PizzaTypesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @pizza_type = pizza_types(:one)
+    @pizza_type = FactoryBot.create(:pizza_type)
   end
 
   test "should get index" do
@@ -17,7 +17,7 @@ class PizzaTypesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create pizza_type" do
     assert_difference('PizzaType.count') do
-      post pizza_types_url, params: { pizza_type: { name: @pizza_type.name, price: @pizza_type.price } }
+      post pizza_types_url, params: { pizza_type: FactoryBot.attributes_for(:pizza_type) }
     end
 
     assert_redirected_to pizza_type_url(PizzaType.last)

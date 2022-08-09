@@ -2,7 +2,8 @@ require "test_helper"
 
 class OrdersControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @order = orders(:one)
+    FactoryBot.create(:order_item)
+    @order = Order.last
   end
 
   test "should get index" do
@@ -17,7 +18,7 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create order" do
     assert_difference('Order.count') do
-      post orders_url, params: { order: {  } }
+      post orders_url
     end
 
     assert_redirected_to order_url(Order.last)
