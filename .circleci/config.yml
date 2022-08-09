@@ -5,33 +5,29 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  build:
+    working_directory: ~/backend-chill
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+      - image: cimg/ruby:3.0.4-browsers
+        environment:
+          RAILS_ENV: test
+      - image: circleci/mysql:8.0.4
+        command: [--default-authentication-plugin=mysql_native_password]
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+          MYSQL_ROOT_HOST: '%'
+          MYSQL_DATABASE: app_test
+          MYSQL_USER: root
     steps:
       - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!" 
-  test:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-        name: "Test"
-        command: "bundle exec rake test"
+      - run: bundle install
+      - run: bundle exec rake db:setup
+      - run: bundle exec rake test
+
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
-    jobs:
-      - say-hello
   test-workflow:
     jobs:
-      - test
+      - build
