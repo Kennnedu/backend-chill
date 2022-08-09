@@ -17,7 +17,7 @@ development:
   <<: *default
   database: backend_challenge_development
   username: root
-  password: shaman044
+  password:
   host: localhost
 
 test:
@@ -28,5 +28,6 @@ test:
   host: localhost
 
 production:
-  url: <%= ENV['MY_APP_DATABASE_URL'] %>
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
 
