@@ -1,5 +1,41 @@
 <h1>New Order</h1>
 
-<%= render 'form', order: @order %>
+<table>
+  <thead>
+    <tr>
+      <th>Position</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+  </thead>
 
-<%= link_to 'Back', orders_path %>
+  <tbody>
+    <% @pizza_types.each do |pizza_type| %>
+      <tr>
+        <td>
+          <%= pizza_type.name %>
+        </td>
+        <td>
+          <%= @cart[pizza_type.id] %>
+        </td>
+        <td>
+          $<%= pizza_type.price %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>
+  Total Price: $<%= @cart_price %>
+</h3>
+
+<p>
+  <%= link_to 'Clear Cart', clear_pizza_types_path, method: :delete %>
+</p
+
+<br>
+
+<%= link_to 'Back', pizza_types_path %>
+|
+<%= link_to 'Order', orders_path, method: :post %>

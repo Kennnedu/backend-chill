@@ -2,6 +2,8 @@
 
 <h1>Pizza Types</h1>
 
+<%= link_to "Cart #{@cart_price}", new_order_path %>
+
 <table>
   <thead>
     <tr>
@@ -16,9 +18,11 @@
       <tr>
         <td><%= pizza_type.name %></td>
         <td><%= pizza_type.price %></td>
-        <td><%= link_to 'Show', pizza_type %></td>
-        <td><%= link_to 'Edit', edit_pizza_type_path(pizza_type) %></td>
-        <td><%= link_to 'Destroy', pizza_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Add', increment_pizza_type_path(pizza_type), method: :patch %></td>
+        <% unless @cart[pizza_type.id].zero? %>
+          <td><%= @cart[pizza_type.id].to_s %></td>
+          <td><%= link_to 'Remove', decrement_pizza_type_path(pizza_type), method: :patch %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

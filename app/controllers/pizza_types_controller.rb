@@ -1,8 +1,11 @@
 class PizzaTypesController < ApplicationController
-  before_action :set_pizza_type, only: %i[ show edit update destroy ]
+  before_action :set_pizza_type, only: %i[ show edit update destroy  increment decrement]
+  before_action :process_cart, only: %i[index increment decrement]
 
   # GET /pizza_types or /pizza_types.json
   def index
+    @cart = session[:cart]
+    @cart_price = session[:cart_price]
     @pizza_types = PizzaType.all
   end
 
@@ -17,6 +20,24 @@ class PizzaTypesController < ApplicationController
 
   # GET /pizza_types/1/edit
   def edit
+  end
+
+  def increment
+    session[:cart][@pizza_type.id] += 1
+    session[:cart_price] += @pizza_type.price
+    redirect_to pizza_types_url
+  end
+
+  def decrement
+    session[:cart][@pizza_type.id] -= 1
+    session[:cart_price] -= @pizza_type.price
+    redirect_to pizza_types_url
+  end
+
+  def clear
+    session.delete(:cart)
+    session.delete(:cart_price)
+    redirect_to pizza_types_url
   end
 
   # POST /pizza_types or /pizza_types.json
